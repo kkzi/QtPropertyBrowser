@@ -1,0 +1,7 @@
+*.stash
+*.log
+*.user
+.vs
+debug
+release
+tlog

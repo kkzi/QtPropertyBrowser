@@ -49,6 +49,9 @@
     <ClCompile Include="..\..\src\qtgroupboxpropertybrowser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\qtlistpropertybrowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\qtpropertybrowser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,6 +67,12 @@
     <ClCompile Include="..\..\src\qtvariantproperty.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\collapsiblecontainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\listpropertywidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\..\src\qtbuttonpropertybrowser.h">
@@ -73,6 +82,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="..\..\src\qtgroupboxpropertybrowser.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\qtlistpropertybrowser.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="..\..\src\qtpropertybrowser.h">
@@ -89,6 +101,12 @@
     </QtMoc>
     <QtMoc Include="..\..\src\qtvariantproperty.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\collapsiblecontainer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\..\src\listpropertywidget.h">
+      <Filter>Generated Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

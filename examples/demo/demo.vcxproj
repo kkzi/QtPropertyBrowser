@@ -188,6 +188,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="..\..\src\qtbuttonpropertybrowser.cpp" />
     <ClCompile Include="..\..\src\qtgroupboxpropertybrowser.cpp" />
+    <ClCompile Include="..\..\src\qtlistpropertybrowser.cpp" />
     <ClCompile Include="..\..\src\qtpropertybrowser.cpp" />
     <ClCompile Include="..\..\src\qtpropertybrowserutils.cpp" />
     <ClCompile Include="..\..\src\qtvariantproperty.cpp" />
@@ -202,6 +203,10 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
     </QtMoc>
     <QtMoc Include="..\..\src\qtgroupboxpropertybrowser.h">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="..\..\src\qtlistpropertybrowser.h">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
     </QtMoc>

@@ -22,7 +22,6 @@ CollapsibleContainer::CollapsibleContainer(QWidget* parent /*= nullptr*/)
 
     auto titlew = new QFrame(this);
     titlew->setObjectName("title-c");
-    titlew->setStyleSheet("QFrame#title-c{background-color:#f0f0f0;border:0;border-bottom:1px solid #ccc;}");
     titlew->setLayout(titlel_);
     titlew->installEventFilter(this);
 
@@ -30,6 +29,8 @@ CollapsibleContainer::CollapsibleContainer(QWidget* parent /*= nullptr*/)
     layout_->setSpacing(0);
     layout_->addWidget(titlew);
     layout_->addWidget(placeholder_, 1);
+
+    setStyleSheet("QWidget{background-color:#fff;} #title-c,#title-c QWidget{background-color:#f0f0f0;} #title-c{border:0;border-bottom:1px solid #ccc;}");
 }
 
 CollapsibleContainer::CollapsibleContainer(const QString& title, QWidget* parent /*= nullptr*/)

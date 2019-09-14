@@ -59,6 +59,8 @@ public:
     QtPropertyPrivate(QtAbstractPropertyManager *manager)
         : m_enabled(true),
           m_modified(false),
+          m_spanned(false),
+          m_heightHint(-1),
           m_manager(manager) {}
     QtProperty *q_ptr;
 
@@ -71,6 +73,8 @@ public:
     QString m_name;
     bool m_enabled;
     bool m_modified;
+    bool m_spanned;
+    int m_heightHint;
 
     QtAbstractPropertyManager * const m_manager;
 };
@@ -264,6 +268,16 @@ bool QtProperty::isModified() const
     return d_ptr->m_modified;
 }
 
+bool QtProperty::isSpanned() const
+{
+    return d_ptr->m_spanned;
+}
+
+int QtProperty::heightHint() const
+{
+    return d_ptr->m_heightHint;
+}
+
 /*!
     Returns whether the property has a value.
 
@@ -396,6 +410,24 @@ void QtProperty::setModified(bool modified)
         return;
 
     d_ptr->m_modified = modified;
+    propertyChanged();
+}
+
+void QtProperty::setSpanned(bool spanned)
+{
+    if (d_ptr->m_spanned == spanned)
+        return;
+
+    d_ptr->m_spanned = spanned;
+    propertyChanged();
+}
+
+void QtProperty::setHeightHint(int heightHint)
+{
+    if (d_ptr->m_heightHint == heightHint)
+        return;
+
+    d_ptr->m_heightHint = heightHint;
     propertyChanged();
 }
 

@@ -26,7 +26,6 @@ public:
     struct WidgetItem
     {
         QtProperty* property = nullptr;
-
         CollapsibleContainer* container = nullptr;
 
         QLabel* label = nullptr;

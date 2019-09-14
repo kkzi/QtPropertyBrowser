@@ -58,6 +58,7 @@
 #include <QSpacerItem>
 #include <QStyleOption>
 #include <QPainter>
+#include <QTextEdit>
 #include <QMap>
 
 #if defined(Q_CC_MSVC)
@@ -2695,6 +2696,160 @@ void QtFontEditorFactory::disconnectPropertyManager(QtFontPropertyManager *manag
 {
     disconnect(manager, SIGNAL(valueChanged(QtProperty*,QFont)), this, SLOT(slotPropertyChanged(QtProperty*,QFont)));
 }
+
+
+
+
+class QtTextEditFactoryPrivate : public EditorFactoryPrivate<QTextEdit>
+{
+    QtTextEditFactory *q_ptr;
+    Q_DECLARE_PUBLIC(QtTextEditFactory)
+
+public:
+    void slotPropertyChanged(QtProperty *property, const QString &value);
+    void slotRegExpChanged(QtProperty *property, const QRegExp &regExp);
+    void slotSetValue(const QString &value);
+    void slotEchoModeChanged(QtProperty *, int);
+    void slotReadOnlyChanged(QtProperty *, bool);
+};
+
+void QtTextEditFactoryPrivate::slotPropertyChanged(QtProperty *property, const QString &value)
+{
+    if (!m_createdEditors.contains(property)) return;
+
+    QListIterator<QTextEdit *> itEditor( m_createdEditors[property]);
+    while (itEditor.hasNext()) {
+        auto editor = itEditor.next();
+        if (editor->toPlainText() != value) {
+            editor->blockSignals(true);
+            editor->setText(value);
+            editor->blockSignals(false);
+        }
+    }
+}
+
+void QtTextEditFactoryPrivate::slotRegExpChanged(QtProperty *property, const QRegExp &regExp)
+{
+    if (!m_createdEditors.contains(property))
+        return;
+
+    QtStringPropertyManager *manager = q_ptr->propertyManager(property);
+    if (!manager)
+        return;
+
+    QListIterator<QTextEdit *> itEditor(m_createdEditors[property]);
+    while (itEditor.hasNext()) {
+        auto editor = itEditor.next();
+        editor->blockSignals(true);
+        //const QValidator *oldValidator = editor->validator();
+        //QValidator *newValidator = 0;
+        //if (regExp.isValid()) {
+        //    newValidator = new QRegExpValidator(regExp, editor);
+        //}
+        //editor->setValidator(newValidator);
+        //if (oldValidator)
+        //    delete oldValidator;
+        editor->blockSignals(false);
+    }
+}
+
+void QtTextEditFactoryPrivate::slotEchoModeChanged(QtProperty *property, int echoMode)
+{
+    if (!m_createdEditors.contains(property))
+        return;
+
+    QtStringPropertyManager *manager = q_ptr->propertyManager(property);
+    if (!manager)
+        return;
+
+    QListIterator<QTextEdit *> itEditor(m_createdEditors[property]);
+    while (itEditor.hasNext()) {
+        auto editor = itEditor.next();
+        editor->blockSignals(true);
+        //editor->setEchoMode((EchoMode)echoMode);
+        editor->blockSignals(false);
+    }
+}
+
+void QtTextEditFactoryPrivate::slotReadOnlyChanged( QtProperty *property, bool readOnly)
+{
+    if (!m_createdEditors.contains(property))
+        return;
+
+    QtStringPropertyManager *manager = q_ptr->propertyManager(property);
+    if (!manager)
+        return;
+
+    QListIterator<QTextEdit *> itEditor(m_createdEditors[property]);
+    while (itEditor.hasNext()) {
+        QTextEdit *editor = itEditor.next();
+        editor->blockSignals(true);
+        editor->setReadOnly(readOnly);
+        editor->blockSignals(false);
+    }
+}
+
+void QtTextEditFactoryPrivate::slotSetValue(const QString &value)
+{
+    QObject *object = q_ptr->sender();
+    const QMap<QTextEdit *, QtProperty *>::ConstIterator ecend = m_editorToProperty.constEnd();
+    for (QMap<QTextEdit *, QtProperty *>::ConstIterator itEditor = m_editorToProperty.constBegin(); itEditor != ecend; ++itEditor)
+        if (itEditor.key() == object) {
+            QtProperty *property = itEditor.value();
+            QtStringPropertyManager *manager = q_ptr->propertyManager(property);
+            if (!manager)
+                return;
+            manager->setValue(property, value);
+            return;
+        }
+}
+
+
+QtTextEditFactory::QtTextEditFactory(QObject* parent /*= 0*/)
+    : QtAbstractEditorFactory<QtStringPropertyManager>(parent)
+{
+    d_ptr = new QtTextEditFactoryPrivate();
+    d_ptr->q_ptr = this;
+}
+
+QtTextEditFactory::~QtTextEditFactory()
+{
+    qDeleteAll(d_ptr->m_editorToProperty.keys());
+    delete d_ptr;
+}
+
+void QtTextEditFactory::connectPropertyManager(QtStringPropertyManager* manager)
+{
+    connect(manager, SIGNAL(valueChanged(QtProperty *, const QString &)), this, SLOT(slotPropertyChanged(QtProperty *, const QString &)));
+    connect(manager, SIGNAL(regExpChanged(QtProperty *, const QRegExp &)), this, SLOT(slotRegExpChanged(QtProperty *, const QRegExp &)));
+    connect(manager, SIGNAL(echoModeChanged(QtProperty*, int)), this, SLOT(slotEchoModeChanged(QtProperty *, int)));
+    connect(manager, SIGNAL(readOnlyChanged(QtProperty*, bool)), this, SLOT(slotReadOnlyChanged(QtProperty *, bool)));
+}
+
+void QtTextEditFactory::disconnectPropertyManager(QtStringPropertyManager* manager)
+{
+    disconnect(manager, SIGNAL(valueChanged(QtProperty *, const QString &)), this, SLOT(slotPropertyChanged(QtProperty *, const QString &)));
+    disconnect(manager, SIGNAL(regExpChanged(QtProperty *, const QRegExp &)), this, SLOT(slotRegExpChanged(QtProperty *, const QRegExp &)));
+    disconnect(manager, SIGNAL(echoModeChanged(QtProperty*,int)), this, SLOT(slotEchoModeChanged(QtProperty *, int)));
+    disconnect(manager, SIGNAL(readOnlyChanged(QtProperty*, bool)), this, SLOT(slotReadOnlyChanged(QtProperty *, bool)));
+}
+
+QWidget* QtTextEditFactory::createEditor(QtStringPropertyManager* manager, QtProperty* property, QWidget* parent)
+{
+    auto editor = d_ptr->createEditor(property, parent);
+    editor->setReadOnly(manager->isReadOnly(property));
+    QRegExp regExp = manager->regExp(property);
+    if (regExp.isValid()) {
+        //QValidator *validator = new QRegExpValidator(regExp, editor);
+        //editor->setValidator(validator);
+    }
+    editor->setText(manager->value(property));
+
+    connect(editor, SIGNAL(textChanged(const QString &)), this, SLOT(slotSetValue(const QString &)));
+    connect(editor, SIGNAL(destroyed(QObject *)), this, SLOT(slotEditorDestroyed(QObject *)));
+    return editor;
+}
+
 
 #if QT_VERSION >= 0x040400
 QT_END_NAMESPACE

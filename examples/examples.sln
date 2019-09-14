@@ -1,18 +1,22 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simple", "C:/dev/ssr/qtpropertybrowser/examples/simple\simple.vcxproj", "{05D003AF-8538-37FC-94DA-632E8F9ED812}"
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simple", "simple\simple.vcxproj", "{05D003AF-8538-37FC-94DA-632E8F9ED812}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canvas_variant", "C:/dev/ssr/qtpropertybrowser/examples/canvas_variant\canvas_variant.vcxproj", "{21087C36-B4F3-3179-A7BF-9C6BEFD3C21C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canvas_variant", "canvas_variant\canvas_variant.vcxproj", "{21087C36-B4F3-3179-A7BF-9C6BEFD3C21C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canvas_typed", "C:/dev/ssr/qtpropertybrowser/examples/canvas_typed\canvas_typed.vcxproj", "{D41C53A3-27DB-32E8-AACF-B02C1330833B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canvas_typed", "canvas_typed\canvas_typed.vcxproj", "{D41C53A3-27DB-32E8-AACF-B02C1330833B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "C:/dev/ssr/qtpropertybrowser/examples/demo\demo.vcxproj", "{97715D6A-CB07-3C03-A7A2-7552A20FEDF5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "demo\demo.vcxproj", "{97715D6A-CB07-3C03-A7A2-7552A20FEDF5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "decoration", "C:/dev/ssr/qtpropertybrowser/examples/decoration\decoration.vcxproj", "{0C58B2D0-9E96-3498-8F72-D127FFFDCBCB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "decoration", "decoration\decoration.vcxproj", "{0C58B2D0-9E96-3498-8F72-D127FFFDCBCB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "extension", "C:/dev/ssr/qtpropertybrowser/examples/extension\extension.vcxproj", "{5C31F503-8C05-35A0-A3F0-2DBC4DB92893}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "extension", "extension\extension.vcxproj", "{5C31F503-8C05-35A0-A3F0-2DBC4DB92893}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_controller", "C:/dev/ssr/qtpropertybrowser/examples/object_controller\object_controller.vcxproj", "{D10847D9-CF86-362B-90B7-506E44FFCF2D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "object_controller", "object_controller\object_controller.vcxproj", "{D10847D9-CF86-362B-90B7-506E44FFCF2D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "list", "list\list.vcxproj", "{6C8A6693-D088-419A-AF83-B378416C3FD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,9 +52,15 @@ Global
 		{D10847D9-CF86-362B-90B7-506E44FFCF2D}.Debug|x64.Build.0 = Debug|x64
 		{D10847D9-CF86-362B-90B7-506E44FFCF2D}.Release|x64.ActiveCfg = Release|x64
 		{D10847D9-CF86-362B-90B7-506E44FFCF2D}.Release|x64.Build.0 = Release|x64
+		{6C8A6693-D088-419A-AF83-B378416C3FD6}.Debug|x64.ActiveCfg = Debug|x64
+		{6C8A6693-D088-419A-AF83-B378416C3FD6}.Debug|x64.Build.0 = Debug|x64
+		{6C8A6693-D088-419A-AF83-B378416C3FD6}.Release|x64.ActiveCfg = Release|x64
+		{6C8A6693-D088-419A-AF83-B378416C3FD6}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+		SolutionGuid = {18698BFF-74A6-424D-8513-1C6470F4F9CB}
 	EndGlobalSection
 EndGlobal

@@ -635,7 +635,18 @@ void QtTreePropertyBrowserPrivate::updateItem(QTreeWidgetItem *item)
     item->setToolTip(0, property->propertyName());
     item->setStatusTip(0, property->statusTip());
     item->setWhatsThis(0, property->whatsThis());
-    item->setText(0, property->propertyName());
+
+    auto spanned = property->isSpanned();
+    if (!spanned) {
+        item->setText(0, property->propertyName());
+    }
+    item->setFirstColumnSpanned(spanned);
+    if (property->heightHint() >= 0) {
+        auto sh = item->sizeHint(0);
+        sh.setHeight(property->heightHint());
+        item->setSizeHint(0, sh);
+    }
+
     bool wasEnabled = item->flags() & Qt::ItemIsEnabled;
     bool isEnabled = wasEnabled;
     if (property->isEnabled()) {
@@ -653,6 +664,7 @@ void QtTreePropertyBrowserPrivate::updateItem(QTreeWidgetItem *item)
         else
             disableItem(item);
     }
+
     m_treeWidget->viewport()->update();
 }
 

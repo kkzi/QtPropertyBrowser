@@ -399,6 +399,38 @@ private:
     Q_PRIVATE_SLOT(d_func(), void slotSetValue(const QFont &))
 };
 
+
+
+
+class QtTextEditFactoryPrivate;
+
+class QT_QTPROPERTYBROWSER_EXPORT QtTextEditFactory : public QtAbstractEditorFactory<QtStringPropertyManager>
+{
+    Q_OBJECT
+
+public:
+    QtTextEditFactory(QObject *parent = 0);
+    ~QtTextEditFactory();
+
+protected:
+    void connectPropertyManager(QtStringPropertyManager *manager);
+    QWidget *createEditor(QtStringPropertyManager *manager, QtProperty *property, QWidget *parent);
+    void disconnectPropertyManager(QtStringPropertyManager *manager);
+
+private:
+    QtTextEditFactoryPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(QtTextEditFactory)
+    Q_DISABLE_COPY(QtTextEditFactory)
+    Q_PRIVATE_SLOT(d_func(), void slotPropertyChanged(QtProperty *, const QString &))
+    Q_PRIVATE_SLOT(d_func(), void slotRegExpChanged(QtProperty *, const QRegExp &))
+    Q_PRIVATE_SLOT(d_func(), void slotEchoModeChanged(QtProperty *, int))
+    Q_PRIVATE_SLOT(d_func(), void slotReadOnlyChanged(QtProperty *, bool))
+    Q_PRIVATE_SLOT(d_func(), void slotSetValue(const QString &))
+    Q_PRIVATE_SLOT(d_func(), void slotEditorDestroyed(QObject *))
+};
+
+
+
 #if QT_VERSION >= 0x040400
 QT_END_NAMESPACE
 #endif

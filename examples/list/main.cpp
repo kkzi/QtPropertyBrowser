@@ -44,11 +44,13 @@
 #include <QTimer>
 #include "qtpropertymanager.h"
 #include "qtvariantproperty.h"
+#include "qteditorfactory.h"
 #include "qttreepropertybrowser.h"
 #include "qtlistpropertybrowser.h"
 #include "collapsiblecontainer.h"
 #include "listpropertywidget.h"
 #include <QTextEdit>
+#include <QStringList>
 
 int main(int argc, char** argv)
 {
@@ -84,127 +86,109 @@ int main(int argc, char** argv)
     item->setAttribute(QLatin1String("decimals"), 3);
     topItem->addSubProperty(item);
 
+    QtProperty* topItem2 = variantManager->addProperty(QtVariantPropertyManager::groupTypeId(), QString::number(i++) + QLatin1String(" Group Property"));
     item = variantManager->addProperty(QVariant::Double, QString::number(i++) + QLatin1String(" Double Property (ReadOnly)"));
     item->setValue(1.23456);
     item->setAttribute(QLatin1String("singleStep"), 0.1);
     item->setAttribute(QLatin1String("decimals"), 5);
     item->setAttribute(QLatin1String("readOnly"), true);
-    topItem->addSubProperty(item);
+    topItem2->addSubProperty(item);
 
     item = variantManager->addProperty(QVariant::String, QString::number(i++) + QLatin1String(" String Property"));
     item->setValue("Value");
-    topItem->addSubProperty(item);
+    topItem2->addSubProperty(item);
 
     item = variantManager->addProperty(QVariant::String, QString::number(i++) + QLatin1String(" String Property (Password)"));
     item->setAttribute(QLatin1String("echoMode"), QLineEdit::Password);
     item->setValue("Password");
-    topItem->addSubProperty(item);
+    topItem2->addSubProperty(item);
 
     // Readonly String Property
     item = variantManager->addProperty(QVariant::String, QString::number(i++) + QLatin1String(" String Property (ReadOnly)"));
     item->setAttribute(QLatin1String("readOnly"), true);
     item->setValue("readonly text");
-    topItem->addSubProperty(item);
+    topItem2->addSubProperty(item);
 
     item = variantManager->addProperty(QVariant::Date, QString::number(i++) + QLatin1String(" Date Property"));
     item->setValue(QDate::currentDate().addDays(2));
-    topItem->addSubProperty(item);
+    topItem2->addSubProperty(item);
 
+    QtProperty* topItem3 = variantManager->addProperty(QtVariantPropertyManager::groupTypeId(), QString::number(i++) + QLatin1String(" Group Property"));
     item = variantManager->addProperty(QVariant::Time, QString::number(i++) + QLatin1String(" Time Property"));
     item->setValue(QTime::currentTime());
-    topItem->addSubProperty(item);
+    topItem3->addSubProperty(item);
 
     item = variantManager->addProperty(QVariant::DateTime, QString::number(i++) + QLatin1String(" DateTime Property"));
     item->setValue(QDateTime::currentDateTime());
-    topItem->addSubProperty(item);
+    topItem3->addSubProperty(item);
 
     item = variantManager->addProperty(QVariant::KeySequence, QString::number(i++) + QLatin1String(" KeySequence Property"));
     item->setValue(QKeySequence(Qt::ControlModifier | Qt::Key_Q));
-    topItem->addSubProperty(item);
+    topItem3->addSubProperty(item);
 
     item = variantManager->addProperty(QVariant::Char, QString::number(i++) + QLatin1String(" Char Property"));
     item->setValue(QChar(386));
-    topItem->addSubProperty(item);
+    topItem3->addSubProperty(item);
 
     item = variantManager->addProperty(QVariant::Locale, QString::number(i++) + QLatin1String(" Locale Property"));
     item->setValue(QLocale(QLocale::Polish, QLocale::Poland));
-    topItem->addSubProperty(item);
+    topItem3->addSubProperty(item);
 
-    item = variantManager->addProperty(QVariant::Point, QString::number(i++) + QLatin1String(" Point Property"));
-    item->setValue(QPoint(10, 10));
-    topItem->addSubProperty(item);
 
-    item = variantManager->addProperty(QVariant::PointF, QString::number(i++) + QLatin1String(" PointF Property"));
-    item->setValue(QPointF(1.2345, -1.23451));
-    item->setAttribute(QLatin1String("decimals"), 3);
-    topItem->addSubProperty(item);
 
-    item = variantManager->addProperty(QVariant::Size, QString::number(i++) + QLatin1String(" Size Property"));
-    item->setValue(QSize(20, 20));
-    item->setAttribute(QLatin1String("minimum"), QSize(10, 10));
-    item->setAttribute(QLatin1String("maximum"), QSize(30, 30));
-    topItem->addSubProperty(item);
+    auto enummgr = new QtEnumPropertyManager();
+    auto enumfct = new QtEnumEditorFactory();
+    auto topItem4 = enummgr->addProperty("Calibration Function");
+    enummgr->setEnumNames(topItem4, QStringList{ "Linear", "Polynomial" });
+    QObject::connect(enummgr, &QtEnumPropertyManager::valueChanged, [=](QtProperty* property, int val)
+    {
+        for (auto p : topItem4->subProperties()) {
+            topItem4->removeSubProperty(p);
+        }
+        if (val == 0) {
+            auto p1 = variantManager->addProperty(QVariant::String, "P1");
+            topItem4->addSubProperty(p1);
+            auto m1 = variantManager->addProperty(QVariant::Double, "M1");
+            topItem4->addSubProperty(m1);
+        }
+        else {
+            auto p2 = variantManager->addProperty(QVariant::String, "P2");
+            topItem4->addSubProperty(p2);
+            auto m2 = variantManager->addProperty(QVariant::Double, "M2");
+            topItem4->addSubProperty(m2);
+        }
+    }
+    );
+    //funp->setEnabled(false);
 
-    item = variantManager->addProperty(QVariant::SizeF, QString::number(i++) + QLatin1String(" SizeF Property"));
-    item->setValue(QSizeF(1.2345, 1.2345));
-    item->setAttribute(QLatin1String("decimals"), 3);
-    item->setAttribute(QLatin1String("minimum"), QSizeF(0.12, 0.34));
-    item->setAttribute(QLatin1String("maximum"), QSizeF(20.56, 20.78));
-    topItem->addSubProperty(item);
 
-    item = variantManager->addProperty(QVariant::Rect, QString::number(i++) + QLatin1String(" Rect Property"));
-    item->setValue(QRect(10, 10, 20, 20));
-    topItem->addSubProperty(item);
-    item->setAttribute(QLatin1String("constraint"), QRect(0, 0, 50, 50));
-
-    item = variantManager->addProperty(QVariant::RectF, QString::number(i++) + QLatin1String(" RectF Property"));
-    item->setValue(QRectF(1.2345, 1.2345, 1.2345, 1.2345));
-    topItem->addSubProperty(item);
-    item->setAttribute(QLatin1String("constraint"), QRectF(0, 0, 50, 50));
-    item->setAttribute(QLatin1String("decimals"), 3);
-
-    item = variantManager->addProperty(QtVariantPropertyManager::enumTypeId(),
-                    QString::number(i++) + QLatin1String(" Enum Property"));
-    QStringList enumNames;
-    enumNames << "Enum0" << "Enum1" << "Enum2";
-    item->setAttribute(QLatin1String("enumNames"), enumNames);
-    item->setValue(1);
-    topItem->addSubProperty(item);
-
-    item = variantManager->addProperty(QtVariantPropertyManager::flagTypeId(),
-                    QString::number(i++) + QLatin1String(" Flag Property"));
-    QStringList flagNames;
-    flagNames << "Flag0" << "Flag1" << "Flag2";
-    item->setAttribute(QLatin1String("flagNames"), flagNames);
-    item->setValue(5);
-    topItem->addSubProperty(item);
-
-    item = variantManager->addProperty(QVariant::SizePolicy, QString::number(i++) + QLatin1String(" SizePolicy Property"));
-    topItem->addSubProperty(item);
-
-    item = variantManager->addProperty(QVariant::Font, QString::number(i++) + QLatin1String(" Font Property"));
-    topItem->addSubProperty(item);
-
-    item = variantManager->addProperty(QVariant::Cursor, QString::number(i++) + QLatin1String(" Cursor Property"));
-    topItem->addSubProperty(item);
-
-    item = variantManager->addProperty(QVariant::Color, QString::number(i++) + QLatin1String(" Color Property"));
-    topItem->addSubProperty(item);
+    QtProperty* topItem5 = variantManager->addProperty(QVariant::String, QString::number(i++) + QLatin1String(" Source Code"));
+    auto spmgr = new QtStringPropertyManager();
+    auto tef = new QtTextEditFactory();
+    auto topItem6 = spmgr->addProperty("");
+    topItem6->setSpanned(true);
+    topItem6->setHeightHint(100);
 
     QtVariantEditorFactory* variantFactory = new QtVariantEditorFactory();
-
-    QtTreePropertyBrowser *variantEditor = new QtTreePropertyBrowser();
+    QtTreePropertyBrowser* variantEditor = new QtTreePropertyBrowser();
     variantEditor->setFactoryForManager(variantManager, variantFactory);
+    variantEditor->setFactoryForManager(enummgr, enumfct);
+    variantEditor->setFactoryForManager(spmgr, tef);
     variantEditor->addProperty(topItem);
+    variantEditor->addProperty(topItem2);
+    variantEditor->addProperty(topItem4);
+    variantEditor->addProperty(topItem5);
+    variantEditor->addProperty(topItem6);
+    variantEditor->addProperty(topItem3);
     variantEditor->setPropertiesWithoutValueMarked(true);
     variantEditor->setRootIsDecorated(false);
-
     variantEditor->show();
 
     item = variantManager->addProperty(QVariant::Color, QString::number(i++) + QLatin1String(" Color Property"));
     variantEditor->setPropertiesWithoutValueMarked(true);
     variantEditor->setRootIsDecorated(false);
 
+    variantEditor->resize(400, 800);
     variantEditor->show();
 
     int ret = app.exec();

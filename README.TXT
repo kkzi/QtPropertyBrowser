@@ -90,4 +90,3 @@ Version history:
      least one character and an icon.
      - Make it possible to properly style custom embedded editors (e.g.
      the color editor provided with the solution).
-
